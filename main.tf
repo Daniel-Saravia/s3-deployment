@@ -71,6 +71,23 @@ resource "aws_s3_object" "react_build" {
   bucket = aws_s3_bucket.hellofromterraform.id
   key    = each.value
   source = "/home/danielsaravia/Desktop/Shop/GCUEngineeringShop/client/build/${each.value}"
+  etag   = filemd5("/home/danielsaravia/Desktop/Shop/GCUEngineeringShop/client/build/${each.value}")
 
-  etag = filemd5("/home/danielsaravia/Desktop/Shop/GCUEngineeringShop/client/build/${each.value}")
+  # Correct content type
+  content_type = lookup(
+    {
+      "html" = "text/html"
+      "css"  = "text/css"
+      "js"   = "application/javascript"
+      "json" = "application/json"
+      "png"  = "image/png"
+      "ico"  = "image/x-icon"
+      "webp" = "image/webp"
+      "txt"  = "text/plain"
+    },
+    split(".", each.value)[length(split(".", each.value)) - 1],
+    "application/octet-stream" # Default Content-Type
+  )
 }
+
+
