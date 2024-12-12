@@ -1,1 +1,1 @@
-learninf terraform
+learning terraform
