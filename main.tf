@@ -5,12 +5,12 @@ provider "aws" {
 ########################
 # S3 Bucket Definition #
 ########################
-resource "aws_s3_bucket" "hellofromterraform" {
-  bucket = "hellofromterraform"
+resource "aws_s3_bucket" "cyberheregroup2_xyz" {
+  bucket = "cyberheregroup2.xyz"
 
   # Tags for identification
   tags = {
-    Name        = "Hello From Terraform Bucket"
+    Name        = "Cyber Here Group 2 Bucket"
     Environment = "Development"
   }
 }
@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "hellofromterraform" {
 # Turn Off "Block All Public Access"
 ####################################
 resource "aws_s3_bucket_public_access_block" "public_access_settings" {
-  bucket = aws_s3_bucket.hellofromterraform.id
+  bucket = aws_s3_bucket.cyberheregroup2_xyz.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -31,7 +31,7 @@ resource "aws_s3_bucket_public_access_block" "public_access_settings" {
 # Bucket Policy for Read #
 #########################
 resource "aws_s3_bucket_policy" "allow_public_read" {
-  bucket = aws_s3_bucket.hellofromterraform.id
+  bucket = aws_s3_bucket.cyberheregroup2_xyz.id
 
   policy = jsonencode({
     Version = "2012-10-17"
@@ -41,7 +41,7 @@ resource "aws_s3_bucket_policy" "allow_public_read" {
         Effect    = "Allow"
         Principal = "*"
         Action    = "s3:GetObject"
-        Resource  = "${aws_s3_bucket.hellofromterraform.arn}/*"
+        Resource  = "${aws_s3_bucket.cyberheregroup2_xyz.arn}/*"
       }
     ]
   })
@@ -51,7 +51,7 @@ resource "aws_s3_bucket_policy" "allow_public_read" {
 # Enable Static Website Hosting #
 #################################
 resource "aws_s3_bucket_website_configuration" "website_config" {
-  bucket = aws_s3_bucket.hellofromterraform.id
+  bucket = aws_s3_bucket.cyberheregroup2_xyz.id
 
   index_document {
     suffix = "index.html"
@@ -68,7 +68,7 @@ resource "aws_s3_bucket_website_configuration" "website_config" {
 resource "aws_s3_object" "react_build" {
   for_each = fileset("/home/danielsaravia/Desktop/Shop/GCUEngineeringShop/client/build", "**/*")
 
-  bucket = aws_s3_bucket.hellofromterraform.id
+  bucket = aws_s3_bucket.cyberheregroup2_xyz.id
   key    = each.value
   source = "/home/danielsaravia/Desktop/Shop/GCUEngineeringShop/client/build/${each.value}"
   etag   = filemd5("/home/danielsaravia/Desktop/Shop/GCUEngineeringShop/client/build/${each.value}")
@@ -89,5 +89,3 @@ resource "aws_s3_object" "react_build" {
     "application/octet-stream" # Default Content-Type
   )
 }
-
-
